@@ -40,13 +40,38 @@ try:
     print(avg_price / total)
 
     # Question 2.3
-    print(max(pw))
+    max_diamond = 0.00
+    max_no = 0
+    temp_no = 0
+    for row in sub_data:
+        temp = (int(row[7]) / float(row[1]))
+        temp_no += 1
+        if temp > max_diamond:
+            max_diamond = temp
+            max_no = temp_no
+    print(max(pw), max_diamond)
     # Question 2.4
-    print(min(pw))
+    min_diamond = 100000.00
+    min_no = 0
+    temp_no = 0
+    for row in sub_data:
+        temp = (int(row[7]) / float(row[1]))
+        temp_no += 1
+        if temp < min_diamond:
+            min_diamond = temp
+            min_no = temp_no
+    print(min(pw), min_diamond)
     pw.sort()
     mid = len(pw) // 2
     # Question 2.5
     print((pw[mid] + pw[~mid]) / 2)
+
+    # Question 4.1
+    print("Highest value diamond, color: " + sub_data[max_no-1][3] + " clarity: " + sub_data[max_no-1][4] + " depth: " +
+          sub_data[max_no-1][5] + " table: " + sub_data[max_no-1][6])
+    # Question 4.2
+    print("Lowest value diamond, color: " + sub_data[min_no - 1][3] + " clarity: " + sub_data[min_no - 1][4] +
+          " depth: " + sub_data[min_no - 1][5] + " table: " + sub_data[min_no - 1][6])
 
 except Exception as e:
     print(e)
