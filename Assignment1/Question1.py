@@ -1,7 +1,7 @@
 import os
 
 ticker = 'diamonds'
-input_dir = r'/Users/donghanghe/study/Assignment1'
+input_dir = r''
 ticker_file = os.path.join(input_dir, ticker + '.csv')
 
 try:
