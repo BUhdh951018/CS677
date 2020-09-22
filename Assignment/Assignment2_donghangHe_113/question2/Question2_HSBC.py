@@ -1,11 +1,13 @@
 import os
 import traceback
-
+# variables for read file
 ticker = 'HSBC'
 input_dir = r'../stock_data'
 ticker_file = os.path.join(input_dir, 'new_' + ticker + '.csv')
-
+# global variables
+# predict label for the last two years
 predict_label = []
+# variable to get predict label from predict() function
 temp_label = []
 
 
@@ -18,27 +20,39 @@ def main():
         print('opened file for ticker: ', ticker)
         # save data in list
         data = []
+        # list for data of first 3 years
         sub_data = []
+        # list for data of last 2 years
         last_data = []
+        # list for the last 4 days of 2017
+        w_data = []
         # split each line to a list
         for row in lines:
             data.append(row.split(','))
-        # select the data of first three years
+        # append data to the three list above
         j = 0
         for line in data:
             if j == 0:
                 j = 1
                 continue
+            # check the data for the first 3 years
             if int(line[1]) < 2018:
                 sub_data.append(line)
+                # check the data for the last 4 days of 2017
+                if int(line[2]) == 12 and int(line[1]) == 2017:
+                    if int(line[3]) > 25:
+                        w_data.append(line)
+            # check the data for the last 2 years
             else:
                 last_data.append(line)
-        # print(last_data)
-
+        # add the 4 days to the last 2 years make them a new list
+        last_data_r = w_data + last_data
         # Question2.1
         for w in range(2, 5):
             print("W = " + str(w) + ":")
-            get_label(last_data, w, sub_data)
+            # according to the w get the label of each days in the last 2 years
+            get_label(last_data_r, w, sub_data)
+            # append each label list to the final predict label list
             predict_label.append(temp_label)
             temp_label = []
         # print(predict_label)
@@ -52,20 +66,19 @@ def main():
 
 
 def get_label(last_data, w, sub_data):
-    j = w - 1
-    for i in range(0, len(last_data) - 1):
-        if j > 0:
-            j -= 1
-            continue
+
+    # print(last_data)
+    for i in range(3, len(last_data) - 1):
         label_temp = []
+
         for m in range(0, w):
             label_temp.append(last_data[i - m][14])
-        # print(label_temp, last_data[i][0])
-        predict(label_temp, sub_data, last_data[i][0])
+        # print(label_temp, last_data[i + 1][0])
+        predict(label_temp, sub_data, last_data[i + 1][0])
 
 
 def predict(label_temp, sub_data, date):
-    label = ['-', '+']
+
     length = len(label_temp)
     label_temp.reverse()
     # print(label_temp)
@@ -99,11 +112,12 @@ def predict(label_temp, sub_data, date):
 def correct_percentage(label, last_data):
     count = [0, 0, 0]
     length = len(last_data)
+
     for j in range(0, 3):
-        for i in range(j + 2, length):
-            if label[j][i - 2 - j] == last_data[i][14]:
+        for i in range(0, length - 1):
+            if label[j][i] == last_data[i][14]:
                 count[j] += 1
-        print(count[j] / len(last_data))
+        print(count[j] / (len(last_data)))
     print(count)
 
 
