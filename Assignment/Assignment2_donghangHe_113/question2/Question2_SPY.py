@@ -18,7 +18,7 @@ def main():
         with open(ticker_file) as f:
             lines = f.readlines()
         print('opened file for ticker: ', ticker)
-        # save data in list
+        # save data in list
         data = []
         # list for data of first 3 years
         sub_data = []
