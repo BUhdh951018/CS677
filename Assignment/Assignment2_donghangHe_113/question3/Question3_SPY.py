@@ -21,7 +21,8 @@ def correct_percentage(e_label, last_data):
                 e_count_s[1] += 1
         else:
             continue
-    # print(e_count[0] / t_count, e_count[1] / f_count)
+    # print((e_count_s[0] + e_count_s[1]) / length)
+    # print(e_count_s[0] / t_count_s, e_count_s[1] / f_count_s)
 
 
 def main():

@@ -30,8 +30,7 @@ try:
     df = pd.DataFrame(df)
 
     print('opened file for ticker: ', ticker)
-    """    your code for assignment 1 goes here
-    """
+    # check the return and add the label to list
     data = list(df['Return'])
     label = []
     for col in data:
@@ -40,8 +39,9 @@ try:
         else:
             label.append(green(str('+')))
     df.insert(14, 'True Label', label)
-
+    # print the label on the table with color
     print(df)
+    # print the label on the table without color
     label = []
     for col in data:
         if float(col) < 0:
@@ -50,6 +50,7 @@ try:
             label.append(str('+'))
     df.iloc[:, 14] = label
     print(df)
+    # save the data to a new file
     df.to_csv('../stock_data/new_SPY.csv', index=False)
 except Exception as e:
     print(e)

@@ -141,8 +141,9 @@ def correct_percentage(label):
                     count_s[j][0] += 1
                 else:
                     count_s[j][1] += 1
-        # print(count[j][0] / t_count, count[j][1] / f_count)
-    # print(count)
+        # print("true positive      true negative")
+        # print(count_s[j][0] / t_count_s, count_s[j][1] / f_count_s)
+    # print(count_s)
 
 
 main()

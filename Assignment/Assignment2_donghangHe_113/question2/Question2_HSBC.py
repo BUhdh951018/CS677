@@ -72,7 +72,7 @@ def main():
             # append each label list to the final predict label list
             predict_label.append(temp_label)
             temp_label = []
-        # print(predict_label)
+
         # Question2.2
         correct_percentage(predict_label)
 
@@ -90,15 +90,15 @@ def get_label(data, w, sub_data):
         # lop for different W
         for m in range(0, w):
             label_temp.append(data[i - m][14])
-        # print(label_temp)
+
         predict(label_temp, sub_data, data[i + 1][0])
 
 
 def predict(label_temp, sub_data, date):
-    # print(label_temp)
+
     length = len(label_temp)
     label_temp.reverse()
-    # print(label_temp)
+
     # int variables for save the '+' and '-'
     next_up = 0
     next_down = 0
@@ -142,6 +142,7 @@ def correct_percentage(label):
                     count[j][0] += 1
                 else:
                     count[j][1] += 1
+        # print("true positive      true negative")
         # print(count[j][0] / t_count, count[j][1] / f_count)
     # print(count)
 

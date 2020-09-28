@@ -4,10 +4,13 @@ from question3.Question3_HSBC import e_count, ep_count
 from question2.Question2_HSBC import t_count, f_count, count, p_count
 from question2.Question2_SPY import t_count_s, f_count_s, count_s, p_count_s
 from question3.Question3_SPY import e_count_s, ep_count_s
+# all correct label use ensemble learning
 e_total = e_count[0] + e_count[1]
+# total label numbers
 total = t_count + f_count
+# correct numbers of each W
 w_total = [(count[0][0] + count[0][1]), (count[1][0] + count[1][1]), (count[2][0] + count[2][1])]
-
+# _s means the data is from S&P-500
 e_total_s = e_count_s[0] + e_count_s[1]
 total_s = t_count_s + f_count_s
 w_total_s = [(count_s[0][0] + count_s[0][1]), (count_s[1][0] + count_s[1][1]), (count_s[2][0] + count_s[2][1])]

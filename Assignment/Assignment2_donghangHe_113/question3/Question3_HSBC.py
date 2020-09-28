@@ -6,10 +6,12 @@ from question2.Question2_HSBC import act_label, t_count, f_count
 e_count = [0, 0]
 # global count list for number of "+" and "-" which we predicted
 ep_count = [0, 0]
+# list for save ensemble label
+ensemble_label = []
 
 
 def correct_percentage(e_label, last_data):
-    global e_count
+    global e_count, ensemble_label
     length = len(last_data)
 
     # calculate the percentage of correct label
@@ -21,6 +23,7 @@ def correct_percentage(e_label, last_data):
                 e_count[1] += 1
         else:
             continue
+    # print((e_count[0] + e_count[1]) / length, length)
     # print(e_count[0] / t_count, e_count[1] / f_count)
 
 
@@ -32,8 +35,7 @@ def main():
 
         # list for save each days 3 predict label
         temp_ensemble_label = []
-        # list for save ensemble label
-        ensemble_label = []
+
         length = int(len(label[0]))
         # get the pattern of each day
         for i in range(0, length):

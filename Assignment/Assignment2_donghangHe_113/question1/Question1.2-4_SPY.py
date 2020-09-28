@@ -49,7 +49,7 @@ def upday(sub_data):
     l_days = len(label_data)
     l_down = label_data.count('-')
     l_up = label_data.count('+')
-    print(l_days, l_down, l_up)
+    # print(l_days, l_down, l_up)
     # probability that the next day is a "up" day
     print("the default probability p that the next day is a up day is " + str(l_up / l_days))
     return l_days
@@ -60,7 +60,7 @@ def k_downday(sub_data, l_days):
     temp = search_all_same(sub_data, l_days, '-')
     k_days = search_change(sub_data, '-')
 
-    print(temp, k_days)
+    # print(temp, k_days)
     print("down days")
     print("For k=1 the probability is %.4f, for k=2 the probability is %.4f, for k=3 the probability is %.4f" %
           (k_days[0] / (temp[0] + k_days[0]), k_days[1] / (temp[1] + k_days[1]), k_days[2] / (temp[2] + k_days[2])))
@@ -71,7 +71,7 @@ def k_upday(sub_data, l_days):
     temp = search_all_same(sub_data, l_days, '+')
     k_days = search_change(sub_data, '+')
 
-    print(temp, k_days)
+    # print(temp, k_days)
     print("up days")
     print("For k=1 the probability is %.4f, for k=2 the probability is %.4f, for k=3 the probability is %.4f" %
           (temp[0] / (temp[0] + k_days[0]), temp[1] / (temp[1] + k_days[1]), temp[2] / (temp[2] + k_days[2])))
@@ -100,7 +100,7 @@ def search_change(sub_data, label):
     # int variable for counting the "up" days
     count = 0
     for row in sub_data:
-
+        # count the three different pattern
         if row[14] == label:
             count += 1
             continue
