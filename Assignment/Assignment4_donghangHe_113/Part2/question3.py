@@ -14,7 +14,8 @@ def main():
         bernford_error = math.sqrt(mean_squared_error(real_p, bernford))
         equal_weight_error = math.sqrt(mean_squared_error(real_p, equal_weight))
 
-        print(bernford_error, equal_weight_error)
+        print("RMSE for model 1 is: " + str(equal_weight_error))
+        print("RMSE for model 2 is: " + str(bernford_error))
 
     except Exception as e:
         print(e)
