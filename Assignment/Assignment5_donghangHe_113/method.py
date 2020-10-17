@@ -1,5 +1,4 @@
 import os
-import numpy as np
 import pandas as pd
 import traceback
 import matplotlib.pyplot as plt
@@ -16,6 +15,11 @@ ticker = 'HSBC'
 input_dir = r'../datasets'
 ticker_file = os.path.join(input_dir, ticker + '_weekly_return_volatility.csv')
 
+
+input_dir_part2 = r'../datasets/'
+
+file_name = os.path.join(input_dir_part2, 'data_banknote_authentication.csv')
+
 try:
     df_HSBC = pd.read_csv(ticker_file)
 
@@ -29,6 +33,16 @@ try:
 
     x_2019 = df_2019[["mean_return", "volatility"]].values
     y_2019 = df_2019[["Label"]].values.ravel()
+
+    # data for part2
+    df_banknote = pd.read_csv(file_name)
+
+    # separate data by analysis set and predict set
+    x_bank = df_banknote[["variance", "skewness", "curtosis", "entropy"]].values
+    y_bank = df_banknote[["class"]].values.ravel()
+
+    cols = ["variance", "skewness", "curtosis", "entropy"]
+
 
 except Exception as e:
     print(e)

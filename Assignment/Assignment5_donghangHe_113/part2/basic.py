@@ -1,13 +1,8 @@
-import pandas as pd
-import os
-
-input_dir = r'../datasets/'
-
-file_name = os.path.join(input_dir, 'data_banknote_authentication.csv')
+from method import df_banknote
 
 
 def main():
-    df = pd.read_csv(file_name)
+    df = df_banknote
 
     # question 1
     data = df['class'].tolist()

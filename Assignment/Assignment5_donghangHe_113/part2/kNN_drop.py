@@ -1,22 +1,15 @@
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix
-
-url = r'../datasets/data_banknote_color.csv'
+from method import df_banknote, y_bank, cols
 
 
-def question1(data):
+def question1(data, y, col):
     # question 1
-    cols = ["variance", "skewness", "curtosis", "entropy"]
-    y = data[["Color"]].values.ravel()
     for i in range(0, 4):
-        cols.pop(i)
+        col.pop(i)
 
-        x = data[cols].values
+        x = data[col].values
 
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.5, random_state=0)
         knn_classifier = KNeighborsClassifier(n_neighbors=7)
@@ -26,14 +19,14 @@ def question1(data):
     
         print("Drop f" + str(i + 1) + " accuracy: " + str(accuracy))
 
-        cols = ["variance", "skewness", "curtosis", "entropy"]
+        col = ["variance", "skewness", "curtosis", "entropy"]
 
 
 def main():
-    data = pd.read_csv(url)
+    data = df_banknote
 
     # question 1
-    question1(data)
+    question1(data, y_bank, cols)
 
 
 main()

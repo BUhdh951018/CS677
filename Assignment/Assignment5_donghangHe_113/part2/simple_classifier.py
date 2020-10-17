@@ -1,23 +1,19 @@
 # -*- coding: utf-8 -*-
 
 import os
-import pandas as pd
 import numpy as np
 import seaborn as sns
-from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
+from method import df_banknote, le
 
-input_dir = r'../datasets'
 plot_dir = r'../plots'
-
-file_name = os.path.join(input_dir, "data_banknote_color.csv")
 
 
 def main():
 
-    df = pd.read_csv(file_name)
+    df = df_banknote
 
     x_train, x_test = train_test_split(df, test_size=0.5, random_state=0)
     df = x_train
@@ -61,8 +57,9 @@ def question1(df):
 
 
 def question3(df):
+    # apply simple classifier
     color = []
-    true_color = df['Color'].tolist()
+    true_color = df['class'].tolist()
     data = np.array(df).tolist()
     for row in data:
         if row[0] > 2 and row[1] > 5 and row[2] < 8:
@@ -70,7 +67,6 @@ def question3(df):
         else:
             color.append('red')
 
-    le = LabelEncoder()
     color = le.fit_transform(color)
     true_color = le.fit_transform(true_color)
 
