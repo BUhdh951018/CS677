@@ -1,5 +1,7 @@
 import os
 import traceback
+from prettytable import PrettyTable
+import matplotlib.pyplot as plt
 
 # variables for read file
 ticker = 'HSBC'
@@ -21,6 +23,12 @@ f_count = 0
 count = [[0, 0], [0, 0], [0, 0]]
 # global count list for number of "+" and "-" which we predicted
 p_count = [[0, 0], [0, 0], [0, 0]]
+# global count list for save correct number
+e_count = [0, 0]
+# global count list for number of "+" and "-" which we predicted
+ep_count = [0, 0]
+# list for save ensemble label
+ensemble_label = []
 
 
 def main():
@@ -75,6 +83,15 @@ def main():
 
         # Question2.2
         correct_percentage(predict_label)
+
+        # Question 3
+        ensemble()
+
+        # Question 4
+        confusion_matrix()
+
+        # Question 5
+        chart()
 
     except Exception as e:
         print(e)
@@ -145,6 +162,104 @@ def correct_percentage(label):
         # print("true positive      true negative")
         # print(count[j][0] / t_count, count[j][1] / f_count)
     # print(count)
+
+
+def ensemble():
+    # get the predict label from question2
+    label = predict_label
+    # print(len(label))
+
+    # list for save each days 3 predict label
+    temp_ensemble_label = []
+
+    length = int(len(label[0]))
+    # get the pattern of each day
+    for i in range(0, length):
+        temp = [label[0][i], label[1][i], label[2][i]]
+        temp_ensemble_label.append(temp)
+
+    # calculate the major of three label
+    for i in range(0, length):
+        temp = max(temp_ensemble_label[i], key=temp_ensemble_label[i].count)
+        ensemble_label.append(temp)
+
+    # get the data of the last two years
+    data = last_data
+    # Question3.1
+    '''
+    for i in range(0, length):
+        print("The ensemble labels of " + data[i][0] + " is " + ensemble_label[i])
+    '''
+    ep_count[0] = ensemble_label.count('+')
+    ep_count[1] = ensemble_label.count('-')
+    # Question3.2
+    correct_percentage_e(ensemble_label, data)
+
+
+def correct_percentage_e(e_label, data):
+    global e_count, ensemble_label
+    length = len(data)
+
+    # calculate the percentage of correct label
+    for i in range(0, length):
+        if e_label[i] == data[i][14]:
+            if data[i][14] == '+':
+                e_count[0] += 1
+            else:
+                e_count[1] += 1
+        else:
+            continue
+
+
+def confusion_matrix():
+    # all correct label use ensemble learning
+    e_total = e_count[0] + e_count[1]
+    # total label numbers
+    total = t_count + f_count
+    # correct numbers of each W
+    w_total = [(count[0][0] + count[0][1]), (count[1][0] + count[1][1]), (count[2][0] + count[2][1])]
+    temp = ['W', 'ticker', 'TP', 'FP', 'TN', 'FN', 'accuracy', 'TPR', 'TNR']
+    table = PrettyTable(temp)
+
+    for i in range(0, 3):
+        table.add_row([i + 2, 'HSBC Holdings', count[i][0], p_count[i][0] - count[i][0], count[i][1],
+                       p_count[i][1] - count[i][1], round(w_total[i] / total, 4),
+                       round(count[i][0] / (count[i][0] + p_count[i][1] - count[i][1]), 4),
+                       round(count[i][1] / (count[i][1] + p_count[i][0] - count[i][0]), 4)
+                       ])
+    table.add_row(['ensemble', 'HSBC Holdings', e_count[0], ep_count[0] - e_count[0], e_count[1],
+                   ep_count[1] - e_count[1], round(e_total / total, 4),
+                   round(e_count[0] / (e_count[0] + ep_count[1] - e_count[1]), 4),
+                   round(e_count[1] / (e_count[1] + ep_count[0] - e_count[0]), 4)
+                   ])
+    print(table)
+
+
+def chart():
+    # the best W is W=4 so save it label to a new list
+    label = predict_label[2]
+    # calculate the price for each days use W=4 label
+    show = [100.00]
+    for i in range(0, len(label)):
+        if label[i] == '+':
+            show.append(round(show[i] * (1 + float(last_data[i][13])), 4))
+        else:
+            show.append(round(show[i], 4))
+    # calculate the price for each days use ensemble label
+    show_s = [100]
+    for i in range(0, len(ensemble_label)):
+        if ensemble_label[i] == '+':
+            show_s.append(show_s[i] * (1 + float(last_data[i][13])))
+        else:
+            show_s.append(show_s[i] * 1)
+    # for i in range(0, 503):
+    # real.append(real[i] * (1 + float(last_data[i][13])))
+    # print the graph
+    plt.plot(show, color='green', label='W')
+    plt.plot(show_s, color='blue', label='ensemble')
+    # plt.plot(real, color='red', label='real')
+    plt.legend()
+    plt.show()
 
 
 main()
