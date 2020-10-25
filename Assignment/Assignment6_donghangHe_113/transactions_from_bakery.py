@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Feb  4 16:49:55 2019
-
-@author: epinsky
-"""
 
 # transactions from a bakery
 import os
@@ -12,9 +7,9 @@ import math
 import numpy as np 
 import random
 
-input_dir = r'C:\Users\epinsky\bu\python\data_science_with_Python\datasets'
-input_file  = os.path.join(input_dir, 'BreadBasket_DMS.csv')
-output_file  = os.path.join(input_dir, 'BreadBasket_DMS_output.csv')
+input_dir = r'dataset'
+input_file = os.path.join(input_dir, 'BreadBasket_DMS.csv')
+output_file = os.path.join(input_dir, 'BreadBasket_DMS_output.csv')
 
 
 def compute_period(hour):
@@ -56,9 +51,7 @@ df['Sec'] = df['Time'].dt.second
 df['Period'] = df['Hour'].apply(compute_period)
 
 df.reset_index(level=0)
-col_list = ['Year','Month','Day','Weekday', 'Period', 
-            'Hour','Min','Sec',
-            'Transaction','Item','Item_Price']
+col_list = ['Year', 'Month', 'Day', 'Weekday', 'Period', 'Hour', 'Min', 'Sec', 'Transaction', 'Item', 'Item_Price']
 df = df[col_list]
 
 df.to_csv(output_file, index=False)
