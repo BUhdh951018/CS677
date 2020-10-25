@@ -140,35 +140,35 @@ def main():
         df = pd.read_csv(input_file)
 
         # question 1
-        # busiest(df)
+        busiest(df)
         print('\n')
 
         # question 2
-        # profitable(df)
+        profitable(df)
         print('\n')
 
         # question 3
-        # most_and_least(df)
+        most_and_least(df)
         print('\n')
 
         # question 4
-        # barista(df)
+        barista(df)
         print('\n')
 
         # question 5
-        # avg_drink_food(df)
+        avg_drink_food(df)
         print('\n')
 
         # question 6
-        # sum_drink_food(df)
+        sum_drink_food(df)
         print('\n')
 
         # question 7
-        # top_5(df)
+        top_5(df)
         print('\n')
 
         # question 8
-        # bottom_5(df)
+        bottom_5(df)
         print('\n')
 
         # question 9
