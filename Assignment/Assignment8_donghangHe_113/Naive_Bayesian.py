@@ -104,6 +104,7 @@ def label_price(data, label):
 
 def main():
     try:
+        print('All answers are summarized in Assignment8.docx')
         df = pd.read_csv(input_file)
         df_train = df[df['Year'] == 2018]
         df_test = df[df['Year'] == 2019]
@@ -150,7 +151,7 @@ def main():
 
     except Exception as e:
         print(e)
-        print(traceback.extract_stack())
+        print(traceback.format_exc())
 
 
 main()
