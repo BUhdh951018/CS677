@@ -110,7 +110,6 @@ def main():
             knn()
             linear_model()
 
-
             title = ['mean_return', 'volatility']
 
         for i in range(3):
