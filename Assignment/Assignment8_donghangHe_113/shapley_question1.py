@@ -23,12 +23,21 @@ lr = LogisticRegression()
 model = LinearRegression(fit_intercept=True)
 knn_classifier = KNeighborsClassifier(n_neighbors=7)
 
+mo = ['Logistic Regression', 'kNN', 'Linear Regression']
 title = ['mean_return', 'volatility']
 # data in accuracy list
 # logistic, knn, linear
 # only standard deviation, only return, all
 accuracy = [[], [], []]
 label_train, label_test, x_test, x_train = 0, 0, 0, 0
+week_close = []
+
+
+def week_close_price(week, adj):
+    for i in range(len(adj) - 1):
+        if week[i] != week[i + 1]:
+            week_close.append(adj[i])
+    week_close.append(adj[len(adj) - 1])
 
 
 def logistic_regression():
@@ -48,11 +57,30 @@ def knn():
     accuracy[1].append(acc)
 
 
-'''
-def linear_model(df):
-    x = np.array(df).reshape(-1, 1)
-    y = 
-'''
+def linear_model():
+    model.fit(x_train, week_close)
+    predict = model.predict(x_test)
+    label = get_label(predict)
+    acc = np.mean(label == label_test)
+    accuracy[2].append(acc)
+
+
+def get_label(predict):
+    predict = predict.tolist()
+    predict.insert(0, week_close[len(week_close) - 1])
+    label = ["red"]
+    for i in range(len(predict)):
+        if i == 0:
+            continue
+
+        if predict[i] > predict[i - 1]:
+            label.append("green")
+        elif predict[i] < predict[i - 1]:
+            label.append("red")
+        else:
+            label.append(label[i - 1])
+    label.pop(0)
+    return label
 
 
 def main():
@@ -67,7 +95,9 @@ def main():
 
         df_all = pd.read_csv(input_file1)
         df_all_train = df_all[df_all['Year'] == 2018]
-        x_all_train = df_all_train['Adj Close']
+        train_price = df_all_train['Adj Close'].tolist()
+        week_number = df_all_train['Week_Number'].tolist()
+        week_close_price(week_number, train_price)
 
         for i in range(3):
             if i != 2:
@@ -78,11 +108,14 @@ def main():
 
             logistic_regression()
             knn()
-            # linear_model(df_train['Week_Number'])
-
+            linear_model()
+            
             title = ['mean_return', 'volatility']
 
-        print(accuracy)
+        for i in range(3):
+            for j in range(2):
+                print(str(mo[i]) + " marginal contribution of feature " + str(title[j]) + " is: " +
+                      str(round((accuracy[i][0] - accuracy[i][j + 1]) * 100, 2)) + "%")
 
     except Exception as e:
         print(e)

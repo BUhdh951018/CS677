@@ -7,10 +7,13 @@ Created on 2020/11/2 5:49 下午
 """
 
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import LabelEncoder
 import traceback
 time = ['Lunch', 'Dinner']
 label = 'tip_percent_of_meal'
+le = LabelEncoder()
 
 
 def avg_tip_time(df):
@@ -30,6 +33,13 @@ def tip_highest(df):
 
 
 def corr(df, col):
+    print("correlation matrix")
+    if col[1] == 'smoker':
+        y = le.fit_transform(df[col[1]])
+        cr = np.corrcoef(df[col[0]], y)
+        print(cr)
+        return
+
     cor = df[col].corr()
     print(cor)
 
@@ -60,11 +70,9 @@ def main():
         avg_tip_day(df)
         # question 3
         print('Question 3:')
-        # TODO donghang 需要优化
         tip_highest(df)
         # question 4
         print('Question 4:')
-        # TODO donghang 需要优化
         corr(df, ['tip', 'total_bill'])
         # question 5
         print('Question 5:')
@@ -78,6 +86,7 @@ def main():
         # question 8
         print('Question 8:')
         # TODO donghang
+        corr(df, ['tip', 'smoker'])
 
     except Exception as e:
         print(e)
