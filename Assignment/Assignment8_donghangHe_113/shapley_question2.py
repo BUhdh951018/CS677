@@ -32,10 +32,11 @@ pd.options.display.max_columns = None
 pd.options.display.max_rows = None
 np.set_printoptions(threshold=np.inf)
 le = LabelEncoder()
-
+# save the accuracy
 accuracy = [[], [], []]
 
 
+# use logistic regression to predict the class
 def logistic_regression(x, y, i):
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.5, random_state=3)
     lr = LogisticRegression()
@@ -51,13 +52,14 @@ def main():
         print('All answers are summarized in Assignment8.docx')
         df = pd.read_csv(url, names=['sepal-length', 'sepal-width', 'petal-length', 'petal-width', 'Class'])
         data = df.copy()
-
+        # loop for three times for three flowers
         for i in range(3):
+            # set other flowers at second class
             for index, row in data.iterrows():
                 if row['Class'] != flowers[i]:
                     data.loc[index, 'Class'] = 'second'
             y = le.fit_transform(data['Class'].values)
-
+            # loop for five times for remove each feature and all four feature
             for j in range(5):
                 if j != 0:
                     feature.pop(j - 1)

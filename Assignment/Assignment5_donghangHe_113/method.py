@@ -29,17 +29,17 @@ try:
 
     # separate data by training set and testing set
     x_2018 = df_2018[["mean_return", "volatility"]].values
-    y_2018 = df_2018[["Label"]].values.ravel()
+    y_2018 = df_2018["Label"].values
 
     x_2019 = df_2019[["mean_return", "volatility"]].values
-    y_2019 = df_2019[["Label"]].values.ravel()
+    y_2019 = df_2019["Label"].values
 
     # data for part2
     df_banknote = pd.read_csv(file_name)
 
     # separate data by analysis set and predict set
     x_bank = df_banknote[["variance", "skewness", "curtosis", "entropy"]].values
-    y_bank = df_banknote[["class"]].values.ravel()
+    y_bank = df_banknote["class"].values
 
     cols = ["variance", "skewness", "curtosis", "entropy"]
 

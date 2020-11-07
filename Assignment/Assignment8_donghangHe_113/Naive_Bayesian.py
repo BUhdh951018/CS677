@@ -135,11 +135,12 @@ def main():
         week_number = df_test['Week_Number'].tolist()
         week_number.append(53)
 
+        # buy and hold strategy
         df_bh = df_new[['Open', 'Close', 'Week_Number']]
         data = np.array(df_bh)
         price = buy_and_hold(data.tolist())
         plt.plot(week_number, price, color='blue', label='buy-and-hold')
-
+        # Gaussian naive bayesian strategy
         price = label_price(data, prediction)
         plt.plot(week_number, price, color='red', label='naive bayesian')
 

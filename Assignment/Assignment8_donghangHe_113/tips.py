@@ -17,40 +17,43 @@ le = LabelEncoder()
 
 
 def avg_tip_time(df):
+    # loop 2 times for lunch and dinner
     for i in range(2):
+        # calculate the mean
         avg_tip = df.loc[df.time == time[i]].tip_percent_of_meal.mean()
         print("Average tip for " + str(time[i]) + " is " + str(round(avg_tip, 2)))
 
 
-def avg_tip_day(df):
-    result = df.groupby(['day'])[label].mean()
-    print(result)
-
-
-def tip_highest(df):
-    result = df.groupby(['day', 'time'])[label].mean()
+def average(df, col):
+    # calculate the mean for each day of the week
+    result = df.groupby(col)[label].mean()
     print(result)
 
 
 def corr(df, col):
     print("correlation matrix")
+    # use numpy corr function to calculate the correlation matrix of question 8
     if col[1] == 'smoker':
+        # transform label
         y = le.fit_transform(df[col[1]])
         cr = np.corrcoef(df[col[0]], y)
         print(cr)
         return
-
+    # calculate the correlation matrix
     cor = df[col].corr()
     print(cor)
 
 
 def smoke_people(df):
+    # select the smoke people
     df_smoke = df[df['smoker'] == 'Yes']
+    # calculate the percentage
     result = len(df_smoke) / len(df)
     print("percentage of people are smoking is", round(result, 4))
 
 
 def tip_increase(df):
+    # plot the chart to check whether increase
     plt.figure()
     df.groupby(['day'])['tip'].plot(legend=True)
     plt.show()
@@ -67,10 +70,10 @@ def main():
         avg_tip_time(df)
         # question 2
         print('Question 2:')
-        avg_tip_day(df)
+        average(df, ['day'])
         # question 3
         print('Question 3:')
-        tip_highest(df)
+        average(df, ['day', 'time'])
         # question 4
         print('Question 4:')
         corr(df, ['tip', 'total_bill'])
@@ -85,7 +88,6 @@ def main():
         tip_increase(df)
         # question 8
         print('Question 8:')
-        # TODO donghang
         corr(df, ['tip', 'smoker'])
 
     except Exception as e:

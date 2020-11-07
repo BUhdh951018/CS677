@@ -44,6 +44,8 @@ def question1(x, y):
 def question2(x_train, y_train, x_test, y_test):
 
     knn_classifier = KNeighborsClassifier(n_neighbors=7)
+    # sac = sc.fit(x_train)
+    # x_train = sac.transform(x_train)
     knn_classifier.fit(x_train, y_train)
     pred_k = knn_classifier.predict(x_test)
     accuracy = np.mean(pred_k == y_test)

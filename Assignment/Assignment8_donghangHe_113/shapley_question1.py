@@ -22,17 +22,20 @@ sc = StandardScaler()
 lr = LogisticRegression()
 model = LinearRegression(fit_intercept=True)
 knn_classifier = KNeighborsClassifier(n_neighbors=7)
-
+# three model name
 mo = ['Logistic Regression', 'kNN', 'Linear Regression']
+# two features
 title = ['mean_return', 'volatility']
 # data in accuracy list
 # logistic, knn, linear
 # only standard deviation, only return, all
 accuracy = [[], [], []]
 label_train, label_test, x_test, x_train = 0, 0, 0, 0
+# week close price in 2018
 week_close = []
 
 
+# get the week close price in 2018 and save in list
 def week_close_price(week, adj):
     for i in range(len(adj) - 1):
         if week[i] != week[i + 1]:
@@ -41,16 +44,15 @@ def week_close_price(week, adj):
 
 
 def logistic_regression():
-    prediction = lr.fit(x_train, label_train).predict(x_test)
+    lr.fit(x_train, label_train)
+    prediction = lr.predict(x_test)
     acc = np.mean(prediction == label_test)
     accuracy[0].append(acc)
 
 
 def knn():
     global x_train
-
     x_train = sc.fit(x_train).transform(x_train)
-
     knn_classifier.fit(x_train, label_train)
     pred_k = knn_classifier.predict(x_test)
     acc = np.mean(pred_k == label_test)
@@ -60,6 +62,7 @@ def knn():
 def linear_model():
     model.fit(x_train, week_close)
     predict = model.predict(x_test)
+    # transform the predict week adj price to label
     label = get_label(predict)
     acc = np.mean(label == label_test)
     accuracy[2].append(acc)
@@ -67,12 +70,14 @@ def linear_model():
 
 def get_label(predict):
     predict = predict.tolist()
+    # insert the last week adj price of 2018 to compare with the first predict price in 2019
     predict.insert(0, week_close[len(week_close) - 1])
-    label = ["red"]
+    # insert the last week label of 2018
+    label = ["green"]
     for i in range(len(predict)):
         if i == 0:
             continue
-
+        # set label strategy
         if predict[i] > predict[i - 1]:
             label.append("green")
         elif predict[i] < predict[i - 1]:
@@ -88,34 +93,37 @@ def main():
     try:
         print('All answers are summarized in Assignment8.docx')
         df = pd.read_csv(input_file)
+        # divide train set and test set
         df_train = df[df['Year'] == 2018]
         df_test = df[df['Year'] == 2019]
         label_train = df_train['Label']
         label_test = df_test['Label']
-
+        # read another file to get the Adj close in 2018
         df_all = pd.read_csv(input_file1)
         df_all_train = df_all[df_all['Year'] == 2018]
         train_price = df_all_train['Adj Close'].tolist()
         week_number = df_all_train['Week_Number'].tolist()
         week_close_price(week_number, train_price)
-
+        # loop three time for three model
         for i in range(3):
+            # remove feature
             if i != 2:
                 title.pop(i)
-
+            # set x_train and x_test
             x_train = df_train[title]
             x_test = df_test[title]
 
             logistic_regression()
             knn()
             linear_model()
-
+            # reset the title
             title = ['mean_return', 'volatility']
 
         for i in range(3):
             for j in range(2):
                 print(str(mo[i]) + " marginal contribution of feature " + str(title[j]) + " is: " +
-                      str(round((accuracy[i][0] - accuracy[i][j + 1]) * 100, 2)) + "%")
+                      str(round((accuracy[i][2] - accuracy[i][j]) * 100, 2)) + "%")
+        print(accuracy)
 
     except Exception as e:
         print(e)
