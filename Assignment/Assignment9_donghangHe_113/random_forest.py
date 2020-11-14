@@ -104,7 +104,9 @@ def label_price(data, label):
 def main():
     print('All answers are summarized in Assignment9.docx')
     try:
+        # read file
         df = pd.read_csv(input_file)
+        # divide the train set and test set
         df_train = df[df['Year'] == 2018]
         df_test = df[df['Year'] == 2019]
         x_train = df_train[['mean_return', 'volatility']].values
@@ -116,13 +118,18 @@ def main():
         plt.title('error rates in different N and d')
         plt.xlabel('N')
         plt.ylabel('error rate')
+        # get best N and d
         for i in range(1, 6):
             error = []
             for j in range(1, 11):
+                # create model
                 model = RandomForestClassifier(n_estimators=j, max_depth=i, random_state=1, criterion='entropy')
+                # fit model
                 model.fit(x_train, y_train)
                 new_instance = np.asmatrix(x_test)
+                # predict
                 pred = model.predict(new_instance)
+                # calculate accuracy
                 accuracy = np.mean(pred != y_test)
                 error.append(accuracy)
             plt.plot(list(range(1, 11)), error)

@@ -108,7 +108,9 @@ def label_price(data, label):
 def main():
     print('All answers are summarized in Assignment9.docx')
     try:
+        # read file
         df = pd.read_csv(input_file)
+        # divide the train set and test set
         df_train = df[df['Year'] == 2018]
         df_test = df[df['Year'] == 2019]
         x_train = df_train[['mean_return', 'volatility']].values
@@ -120,23 +122,26 @@ def main():
         x_test = sc.fit(x_test).transform(x_test)
 
         # question 1
+        # fit the LDA model
         lda_classifier.fit(x_train, y_train)
+        # print the equation
         print(f'Equation for linear classifier: ({lda_classifier.coef_[0][0]})x1 + ({lda_classifier.coef_[0][1]})x2 '
               f'+ ({lda_classifier.intercept_[0]}) = 0')
+        # fit the QDA model
         qda_classifier.fit(x_train, y_train)
-        # print(f'Equation for linear classifier: ({lda_classifier.coef_[0][0]})x1 + ({lda_classifier.coef_[0][1]})x2 '
-        #       f'+ ({lda_classifier.intercept_[0]}) = 0')
-        # TODO quadratic equation
 
         # question 2
+        # user LDA and QDA model preidct label
         pred_lda = lda_classifier.predict(x_test)
         pred_qda = qda_classifier.predict(x_test)
+        # calculate the accuracy
         accuracy_lda = np.mean(pred_lda == y_test)
         accuracy_qda = np.mean(pred_qda == y_test)
         print('Accuracy for year 2 for LDA is', accuracy_lda)
         print('Accuracy for year 2 for QDA is', accuracy_qda)
 
         # question 3
+        # confusion matrix
         matrix_lda = confusion_matrix(y_test, pred_lda)
         matrix_qda = confusion_matrix(y_test, pred_qda)
         print('confusion matrix for LDA')
@@ -145,6 +150,7 @@ def main():
         print(matrix_qda)
 
         # question 4
+        # TPR and TNR
         print('LDA')
         tpr = matrix_lda[0][0] / (matrix_lda[0][0] + matrix_lda[0][1])
         tnr = matrix_lda[1][1] / (matrix_lda[1][0] + matrix_lda[1][1])
@@ -157,9 +163,11 @@ def main():
         print("true negative rate is: ", tnr)
 
         # question 5
+        # read another file with weekly open and close price
         df_new = pd.read_csv(input_file1)
+        # select 2019 data for plot the chart
         df_new = df_new[df_new['Year'] == 2019]
-
+        # set the week number and add another week, because the first week is 100
         week_number = df_test['Week_Number'].tolist()
         week_number.append(53)
 

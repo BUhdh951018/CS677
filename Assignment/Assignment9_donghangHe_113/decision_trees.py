@@ -106,33 +106,42 @@ def main():
     global clf
     print('All answers are summarized in Assignment9.docx')
     try:
+        # read file
         df = pd.read_csv(input_file)
+        # divide train set and test set
         df_train = df[df['Year'] == 2018]
         df_test = df[df['Year'] == 2019]
 
         # question 1
         x = df_train[['mean_return', 'volatility']].values
         y = df_train['Label'].values
+        # fit decision tree model
         clf = clf.fit(x, y)
+        # predict the label
         pred = clf.predict(np.asmatrix(df_test[['mean_return', 'volatility']].values))
+        # calculate the accuracy
         accuracy = np.mean(pred == df_test['Label'].values)
         print('Accuracy for year 2 is', accuracy)
 
         # question 2
+        # confusion matrix
         matrix = confusion_matrix(df_test['Label'].values, pred)
         print('confusion matrix')
         print(matrix)
 
         # question 3
+        # TPR and TNR
         tpr = matrix[0][0] / (matrix[0][0] + matrix[0][1])
         tnr = matrix[1][1] / (matrix[1][0] + matrix[1][1])
         print("true positive rate is: ", tpr)
         print("true negative rate is: ", tnr)
 
         # question 4
+        # read another file with weekly open and close price
         df_new = pd.read_csv(input_file1)
+        # select 2019 data for plot the chart
         df_new = df_new[df_new['Year'] == 2019]
-
+        # set the week number and add another week, because the first week is 100
         week_number = df_test['Week_Number'].tolist()
         week_number.append(53)
 
