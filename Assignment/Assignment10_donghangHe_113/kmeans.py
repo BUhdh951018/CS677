@@ -20,9 +20,12 @@ input_file = os.path.join(input_dir, title + '_weekly_return_volatility.csv')
 
 def main():
     try:
+        print("all answer shown in the doc file assignment10.docx")
         df = pd.read_csv(input_file)
+        df_test = df.copy()
         x = df[['mean_return', 'volatility']].values
 
+        # question 1
         inertia_list = []
         for k in range(1, 9):
             kmeans_classifier = KMeans(n_clusters=k)
@@ -36,6 +39,19 @@ def main():
         plt.ylabel('inertia')
         plt.tight_layout()
         plt.show()
+
+        # question 2
+        kmeans_classifier = KMeans(n_clusters=2)
+        y_means = kmeans_classifier.fit_predict(x)
+        df_test['cluster'] = y_means
+
+        for i in range(2):
+            df_new = df_test[df_test['cluster'] == i]
+            df_label = df_new[df_new['Label'] == 'green']
+            percent = len(df_label) / len(df_new)
+            print(f'Percentage of "Green" in Cluster {i}: {round(percent)}')
+            print(f'Percentage of "Red" in Cluster {i}: {round(1 - percent)}')
+        # TODO donghang
 
     except Exception as e:
         print(e)
